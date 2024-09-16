@@ -1,19 +1,18 @@
 const yes = document.getElementById('yes');
 const no = document.getElementById('no');
+const responInput = document.querySelector(".response-input");
 let modalContent = document.querySelector(".modal-content");
 let blurBg = document.querySelector(".blur-bg");
 let closeModal = document.querySelector(".close-modal");
 let closePopup = document.querySelector(".close-popup");
+let closeNew = document.querySelector(".confirm-btn");
+let newModalContent = document.querySelector(".new-modal-content");
 var yesButton = document.getElementById("yes-btn");
 var music = document.getElementById("background-music");
 let scaleNo = 1;
 let scaleYes = 1;
 no.addEventListener('mouseover', ()=> {
-    // const x = Math.floor(Math.random() * (window.innerHeight-150));
-    // const y =  Math.floor(Math.random() * (window.innerHeight-150));
-    // no.style.left = `${x}px`;
-    // no.style.top = `${y}px`;
-    scaleNo -= 0.05;
+    scaleNo -= 0.1;
     if (scaleNo < 0.1) scaleNo = 0.1;
 
     no.style.transform = `scale(${scaleNo})`;
@@ -30,35 +29,72 @@ no.addEventListener('mouseover', ()=> {
     no.style.left = `${x}px`;
     no.style.top = `${y}px`;
 });
-// no.addEventListener('mouseover', function(){
-//     no.style.transform = 'scale(0.5)';
-// });
+let typingTimer;  
+const done = 300;  
+responInput.addEventListener('input', function() {
+    clearTimeout(typingTimer);     
+    typingTimer = setTimeout(function() {
+        if (responInput.value === "") {
+            return;
+        }
+        responInput.value = "Dạaa anh iu :3";  
+    }, done);
+    if (responInput.value.trim() === "") {
+        closeNew.disabled = true;
+    } else {
+        closeNew.disabled = false;
+    }
+});
+
 yes.addEventListener('click',  function(){
     modalContent.classList.remove("hidden-modal");
     blurBg.classList.remove("hidden-blur");
+    music.play(); 
+    no.classList.add("hidden-buttons");
+    triggerConfetti();
 })
 let closeModalFunction = function () {
-    modalContent.classList.add("hidden-modal")
-    blurBg.classList.add("hidden-blur")
+    modalContent.classList.add("hidden-modal");
+    newModalContent.classList.remove("hidden-modal");
 }
-blurBg.addEventListener("click", closeModalFunction);
-closeModal.addEventListener("click", function(){
-    alert('Giờ Em Sẽ Là Của Anh 3==D');
-    music.pause();
-    music.currentTime = 0;
-});
 closeModal.addEventListener("click", closeModalFunction);
+
+closeNew.addEventListener('click', function() {
+    newModalContent.classList.add("hidden-modal");
+    blurBg.classList.add("hidden-blur");
+    alert("Hứa rùiii đó nha!!\nMai anh qua đón Bé iuuu <3 ");
+    responInput.value = "";
+    music.pause();
+    music.currentTime = 0;   
+    no.classList.remove("hidden-buttons");
+    window.location.href = "https://www.facebook.com/profile.php?id=100010430084777";
+});
 
 document.addEventListener("keydown", function (event) {
     if (event.key === "Escape"
     && !modalContent.classList.contains("hidden")
     ) {
     closeModalFunction();
-    music.pause();
-    music.currentTime = 0;
     }
 });
-yesButton.addEventListener("click", function() {
-    music.play();
-  });
+
+document.addEventListener("keydown", function(event){
+    if(event.key === "Enter" && !newModalContent.classList.contains("hidden")){
+        newModalContent.classList.add("hidden-modal");
+        blurBg.classList.add("hidden-blur");
+        alert("Hứa rùiii đó nha!!\nMai anh qua đón Bé iuuu <3 ");
+        responInput.value = "";
+        music.pause();
+        music.currentTime = 0;   
+        no.classList.remove("hidden-buttons");
+    }
+})
+function triggerConfetti() {
+    confetti({
+        particleCount: 200,
+        spread: 70,
+        origin: { y: 0.6 }
+    });
+}
+
   
